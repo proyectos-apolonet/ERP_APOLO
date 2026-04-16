@@ -1,5 +1,18 @@
 import React from 'react'
 
+/**
+ * @typedef {Object} ModalSizes
+ * @property {string} sm - max-w-xl (Pequeño)
+ * @property {string} md - max-w-3xl (Mediano)
+ * @property {string} lg - max-w-5xl (Grande)
+ * @property {string} xl - max-w-7xl (Extra Grande)
+ * @property {string} full - max-w-10xl (Ancho máximo)
+ */
+
+/**
+ * Diccionario de anchos máximos permitidos para el modal.
+ * @constant
+ */
 const SIZES = {
     sm: "max-w-xl",
     md: "max-w-3xl",
@@ -8,6 +21,33 @@ const SIZES = {
     full: "max-w-10xl"
 };
 
+/**
+ * `GlobalModal` - Un contenedor de ventana modal versátil y responsivo.
+ * * * Características:
+ * - Soporta diferentes tamaños predefinidos.
+ * - Fondo con desenfoque (backdrop-blur).
+ * - Adaptable a temas (Dark/Light) mediante clases de DaisyUI (`bg-base-100`).
+ * - Scroll interno independiente para contenido largo.
+ * * @example
+ * <GlobalModal 
+ * isOpen={showModal} 
+ * onClose={() => setShowModal(false)} 
+ * title="Detalles del Registro"
+ * size="lg"
+ * content={<p>Este es el cuerpo del modal</p>}
+ * />
+ * * @param {Object} props
+ * @param {boolean} props.isOpen - Estado que determina si el modal es visible.
+ * @param {function} props.onClose - Función para cerrar el modal.
+ * @param {string} props.title - Título que aparece en la cabecera.
+ * @param {React.ReactNode} props.content - Contenido JSX que se renderizará en el cuerpo.
+ * @param {('sm'|'md'|'lg'|'xl'|'full')} [props.size="xl"] - Ancho máximo del modal.
+ * @param {boolean} [props.showFooter=false] - Determina si se muestra la barra de botones inferior.
+ * @param {function} [props.onConfirm] - Función a ejecutar al hacer clic en el botón principal.
+ * @param {string} [props.confirmText="Confirmar"] - Etiqueta del botón principal.
+ * @param {string} [props.cancelText="Cancelar"] - Etiqueta del botón de cierre.
+ * @param {string} [props.confirmColor="btn-primary"] - Clase de DaisyUI para el color del botón principal.
+ */
 const GlobalModal = ({
     isOpen,
     onClose,
@@ -21,6 +61,7 @@ const GlobalModal = ({
     confirmColor = "btn-primary" // Cambiado a clase de DaisyUI
 }) => {
 
+  /* Si el modal no está abierto, no renderizamos nada en el DOM */
     if(!isOpen) return null;
 
     return (
@@ -75,4 +116,4 @@ const GlobalModal = ({
     )
 }
 
-export default GlobalModal
+export default GlobalModal;
