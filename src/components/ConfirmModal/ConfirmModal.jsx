@@ -1,4 +1,18 @@
 import React from "react";
+/**
+ * @typedef {Object} ModalTheme
+ * @property {string} iconBg - Clase de Tailwind para el fondo del ícono.
+ * @property {string} iconColor - Clase de Tailwind para el color del ícono.
+ * @property {string} btnColor - Clases de Tailwind para el estado normal y hover del botón principal.
+ * @property {JSX.Element} icon - Elemento SVG correspondiente al tipo de alerta.
+ */
+
+/**
+ * Configuración de temas visuales para el modal.
+ * Define colores y símbolos según la intención de la acción.
+ * @constant
+ * @type {Object.<string, ModalTheme>}
+ */
 
 const TIPOS = {
   danger: {
@@ -42,6 +56,27 @@ const TIPOS = {
   },
 };
 
+/**
+ * `ConfirmModal` - Un diálogo de confirmación reutilizable y estilizado con Tailwind CSS.
+ * * @example
+ * <ConfirmModal 
+ * isOpen={show} 
+ * onClose={() => setShow(false)} 
+ * onConfirm={handleDelete}
+ * title="¿Eliminar registro?"
+ * message="Esta acción no se puede deshacer."
+ * type="danger"
+ * />
+ * * @param {Object} props
+ * @param {boolean} props.isOpen - Controla la visibilidad del modal.
+ * @param {function} props.onClose - Función para cerrar el modal (Cancelación o click fuera).
+ * @param {function} props.onConfirm - Función que se ejecuta al confirmar la acción.
+ * @param {string} props.title - Título principal del modal.
+ * @param {string} props.message - Texto descriptivo o cuerpo del mensaje.
+ * @param {('danger'|'success'|'warning'|'info')} [props.type="danger"] - Define el estilo visual y el icono.
+ * @param {string} [props.confirmText="Confirmar"] - Texto del botón de acción.
+ * @param {string} [props.cancelText="Cancelar"] - Texto del botón de cierre.
+ */
 const ConfirmModal = ({
   isOpen, onClose, onConfirm,
   title, message,
