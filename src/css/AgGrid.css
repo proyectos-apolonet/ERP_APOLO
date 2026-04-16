@@ -1,0 +1,161 @@
+/* ── Contenedor principal ────────────────────────────────── */
+.mi-grid {
+  width: 100%;
+  height: 700px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 32px 0 rgba(30, 58, 95, 0.15);
+  border: 1.5px solid #e2e8f0;
+
+  --ag-header-background-color: #1e3a5f;
+  --ag-header-foreground-color: #ffffff;
+  --ag-header-height: 52px;
+  --ag-header-column-separator-display: block;
+  --ag-header-column-separator-color: #2d5a8e;
+  --ag-header-column-separator-width: 1px;
+
+  --ag-row-height: 52px;
+  --ag-odd-row-background-color: #f8fafc;
+  --ag-even-row-background-color: #ffffff;
+  --ag-row-hover-color: #e0eaff;
+  --ag-selected-row-background-color: #bfdbfe;
+
+  --ag-border-color: #e2e8f0;
+  --ag-row-border-style: solid;
+  --ag-row-border-width: 1px;
+  --ag-row-border-color: #e9eef4;
+  --ag-cell-horizontal-border: solid #e9eef4;
+
+  --ag-font-size: 13px;
+  --ag-font-family: Inter, system-ui, sans-serif;
+
+  --ag-pagination-background-color: #f1f5f9;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.mi-grid .ag-header {
+  background-color: #1e3a5f !important;
+}
+
+.mi-grid .ag-header-cell {
+  background-color: #FF6D1F !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  border-right: 1px solid #2d5a8e !important;
+}
+
+.mi-grid .ag-header-cell-text {
+  color: #ffffff !important;
+}
+
+.mi-grid .ag-header-icon {
+  color: #93c5fd !important;
+}
+
+.mi-grid .ag-sort-indicator-icon {
+  color: #93c5fd !important;
+}
+
+/* ── Filas ───────────────────────────────────────────────── */
+.mi-grid .ag-row {
+  border-bottom: 1px solid #e9eef4 !important;
+  transition: background-color 0.15s ease;
+}
+
+.mi-grid .ag-row:hover {
+  background-color: #e0eaff !important;
+}
+
+.mi-grid .ag-row-even {
+  background-color: #ffffff !important;
+}
+
+.mi-grid .ag-row-odd {
+  background-color: #f8fafc !important;
+}
+
+/* ── Celdas ──────────────────────────────────────────────── */
+.mi-grid .ag-cell {
+  display: flex !important;
+  align-items: center !important;
+  border-right: 1px solid #e9eef4 !important;
+  color: #334155 !important;
+  font-size: 13px !important;
+}
+
+/* ── Paginación ──────────────────────────────────────────── */
+.mi-grid .ag-paging-panel {
+  background-color: #f1f5f9 !important;
+  border-top: 1.5px solid #e2e8f0 !important;
+  font-size: 13px !important;
+  color: #475569 !important;
+}
+
+.mi-grid .ag-paging-button {
+  color: #1e3a5f !important;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+.mi-grid ::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.mi-grid ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.mi-grid ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+/* ── Badges Estado ───────────────────────────────────────── */
+.badge {
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  letter-spacing: 0.3px;
+}
+
+.badge-pendiente {
+  background: #fef9c3;
+  color: #854d0e;
+  border: 1px solid #fde047;
+}
+
+.badge-aprobado {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+.badge-rechazado {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+/* ── Badges Prioridad ────────────────────────────────────── */
+.badge-alta {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.badge-media {
+  background: #ffedd5;
+  color: #9a3412;
+  border: 1px solid #fdba74;
+}
+
+.badge-baja {
+  background: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #93c5fd;
+}

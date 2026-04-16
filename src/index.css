@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default, dark;
+}
+@import 'primereact/resources/themes/lara-light-blue/theme.css';
+@import 'primeicons/primeicons.css'      
