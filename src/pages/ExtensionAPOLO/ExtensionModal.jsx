@@ -3,10 +3,25 @@ import { useConfirm } from '../../context/ConfirmDialog/ConfirmDialogContext';
 import { postExtensiones } from '../../api/services/extensionesService/extenssionesService';
 import useForm from '../../hook/useForm';
 
+/**
+ * `ExtensionModal` - Formulario para la creación de extensiones telefónicas.
+ * * * Características:
+ * - Gestión de estado y validaciones mediante el hook `useForm`.
+ * - Diálogos de confirmación para prevenir la pérdida de datos al cancelar.
+ * - Integración con el servicio `postExtensiones`.
+ * - Estilizado con DaisyUI y Bootstrap Icons.
+ * * @param {Object} props
+ * @param {function} props.onClose - Función para cerrar el modal tras completar la acción o cancelar.
+ */
 const ExtensionModal = ({ onClose }) => {
 
+    /** * Contexto de confirmación para acciones críticas.
+     */
     const { confirmSave, confirmLeave } = useConfirm();
 
+    /** * Inicialización del hook de formulario con valores por defecto.
+     * Incluye manejo de errores, carga (loading) y el envío (handleSubmit).
+     */
     const { form, errors, loading, handleChange, resetForm, handleSubmit } = useForm({
         nombre:       "",
         departamento: "",
@@ -16,6 +31,11 @@ const ExtensionModal = ({ onClose }) => {
         estado:       "Habilitado",
     });
 
+    /**
+     * Procesa el envío del formulario.
+     * Valida los campos requeridos y realiza la petición POST.
+     * @callback guardar
+     */
     const guardar = handleSubmit(
         async (data) => {
             await postExtensiones(data);
@@ -26,7 +46,7 @@ const ExtensionModal = ({ onClose }) => {
 
     return (
         <div>
-            {/* Botones */}
+            {/* Sección de Acciones: Guardar y Cancelar */}
             <div className="flex flex-wrap gap-1 mb-1 p-2">
                 <button
                     onClick={guardar}
@@ -50,7 +70,7 @@ const ExtensionModal = ({ onClose }) => {
                 </button>
             </div>
 
-            {/* Fila 1 */}
+            {/* Fila 1: Información básica de identidad */}
             <div className='border border-black p-2 mb-2 rounded-sm'>
                 <div className='flex flex-wrap gap-5 p-1'>
 
@@ -102,7 +122,7 @@ const ExtensionModal = ({ onClose }) => {
                 </div>
             </div>
 
-            {/* Fila 2 */}
+            {/* Fila 2: Información de contacto y estado */}
             <div className='border border-black p-2 mb-2 rounded-sm'>
                 <div className='flex flex-wrap gap-5 p-1'>
 

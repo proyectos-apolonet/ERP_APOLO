@@ -2,9 +2,27 @@ import React from 'react'
 import Dropdown from '../../../components/UI/Dropdown'
 import DataGridAg from '../../../components/AgGrid/DataAgGrid'
 
+/**
+ * @file RequisaModalNueva.jsx
+ * @description Formulario maestro para la creación y edición de requisas.
+ * Proporciona una interfaz rica en controles para definir solicitantes, prioridades,
+ * fechas y el desglose de productos mediante un grid integrado.
+ */
 
+/**
+ * `RequisaModalNueva` - Componente de formulario de alta complejidad.
+ * * Características:
+ * - Layout denso para optimizar el espacio en pantallas de gestión.
+ * - Toolbar de acciones rápidas (Guardar, Imprimir, Agregar ítem).
+ * - Integración de `DataGridAg` para previsualizar los ítems añadidos a la requisa.
+ * * @returns {JSX.Element} Formulario estructurado para la gestión de requisas.
+ */
 const RequisaModalNueva = () => {
 
+  /**
+   * Configuración de columnas para el grid de ítems de la requisa.
+   * Define la estructura de los productos que se están solicitando.
+   */
   const columns = [
     { field: "id", header: "#", frozen: "left", width: 70 },
     { field: "requisa", header: "Requisa", frozen: "left", width: 130 },
@@ -20,6 +38,9 @@ const RequisaModalNueva = () => {
     { field: "costo", header: "Costo" },
   ];
 
+  /**
+   * Datos locales/temporales de la requisa en creación.
+   */
   const data = [
     {
       id: 1, requisa: "REQ-001", fechaRequisa: "2026-04-01", fechaCreacion: "2026-04-01",
@@ -37,8 +58,12 @@ const RequisaModalNueva = () => {
   return (
 
     <>
+    {/* SECCIÓN 1: Cabecera y Controles de Acción */}
       <div className='flex flex-wrap mb-2 border border-black rounded-md p-2 gap-4' >
+
+        {/* Panel Izquierdo: Identificación y Herramientas */}
         <div className='p-2 border border-black mb-1 rounded-sm'>
+          {/* Selector de Número de Requisa */}
           <div className='p-1 mb-1 gap-1 border border-black rounded-sm' >
             <Dropdown
               label="No.Requisa"
@@ -48,6 +73,8 @@ const RequisaModalNueva = () => {
               onChange={[]}
             />
           </div>
+
+          {/* Selector de Fecha */}
           <div className='p-1 mb-1 gap-1 border border-black rounded-sm ' >
             <label className="floating-label p-1 ">
               <span className="label-text font-bold text-base-content">Fecha</span>
@@ -59,6 +86,8 @@ const RequisaModalNueva = () => {
               onChange={(e) => setFecha(e.target.value)}
             />
           </div>
+
+          {/* Barra de Herramientas (Toolbar) */}
           <div className='p-1 mb-1 gap-1 border border-black rounded-sm'>
             <div className="tooltip p-1" data-tip="Nuevo Item">
               <button className="btn btn-secondary p-3 mb-2">
@@ -93,6 +122,7 @@ const RequisaModalNueva = () => {
           </div>
         </div>
 
+        {/* Panel Derecho: Datos del Solicitante y Departamento */}
         <div className='border border-black p-2 mb-2 rounded-sm'>
           <div className='flex flex-wrap border border-black mb-2 p-1 gap-5 rounded-sm'>
             <div>
@@ -133,8 +163,8 @@ const RequisaModalNueva = () => {
             </div>
           </div>
 
+          {/* Prioridad y Observaciones */}
           <div className='flex flex-wrap border border-black p-1 gap-4 rounded-sm'>
-            
             <div>
               <Dropdown
                 label="Prioridad"
@@ -152,6 +182,7 @@ const RequisaModalNueva = () => {
         </div>
       </div>
 
+      {/* SECCIÓN 2: Visualización de Ítems (Grid) */}
       <div style={{ padding: "24px", background: "#09093e", minHeight: "100vh", borderRadius:"10px" }}>
         <h2 style={{ fontSize: "22px", fontWeight: 700, color: "#FF6D1F", marginBottom: "16px" }}>
           Historial de Requisas
@@ -163,4 +194,4 @@ const RequisaModalNueva = () => {
   )
 }
 
-export default RequisaModalNueva
+export default RequisaModalNueva;

@@ -5,13 +5,36 @@ import { useConfirm } from '../context/ConfirmDialog/ConfirmDialogContext.jsx'
 import { useModal } from '../context/ModalContext/ModalContext.jsx'
 import ExtensionModal from './ExtensionAPOLO/ExtensionModal.jsx'
 
+/**
+ * @file HomePage.jsx
+ * @description Vista principal del directorio de extensiones.
+ * Gestiona el ciclo de vida de los datos de extensiones, permitiendo la consulta,
+ * edición y creación de nuevos registros mediante servicios asíncronos.
+ */
+
+/**
+ * `HomePage` - Componente principal de la interfaz de extensiones.
+ * * Características:
+ * - Carga automática de datos al montar el componente vía `useEffect`.
+ * - Integración con `ExtensionModal` para altas de registros.
+ * - Acciones de fila protegidas por diálogos de confirmación.
+ * * @returns {JSX.Element} Panel de administración de extensiones.
+ */
 const HomePage = () => {
 
-  const { openModal, closeModal} = useModal();
-  const { confirmSave, confirmDelete} = useConfirm();
+  const { openModal, closeModal } = useModal();
+  const { confirmSave, confirmDelete } = useConfirm();
+
+  // Estados para el manejo de datos y feedback visual
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState([])
 
+  /**
+   * Obtiene la información desde el backend.
+   * Actualiza el estado local 'data' y maneja la visibilidad del loader.
+   * @async
+   * @function getInfo
+   */
   const getInfo = async () => {
 
     try {
@@ -29,16 +52,24 @@ const HomePage = () => {
     }
   };
 
+  /**
+   * Dispara la apertura del modal para crear una nueva extensión.
+   * Pasa la función 'closeModal' al hijo para permitir el cierre tras guardar.
+   */
   const handleNuevaExtension = () => {
-  openModal({
-    title: "Nueva Extension",
-    size: "lg",
-    showFooter: false,
-    // Aquí pasamos el componente directamente
-    content: <ExtensionModal onClose={closeModal} />
-  });
-};
+    openModal({
+      title: "Nueva Extension",
+      size: "lg",
+      showFooter: false,
+      // Aquí pasamos el componente directamente
+      content: <ExtensionModal onClose={closeModal} />
+    });
+  };
 
+  /**
+   * Definición de columnas para el Grid de Extensiones.
+   * Incluye anchos específicos y renderizadores de acciones.
+   */
   const columns = [
     {
       field: "id_ext",
@@ -83,6 +114,7 @@ const HomePage = () => {
     {
       field: "id", header: "Acciones", width: 150, frozen: "right", render: (data) => (
         <div className="flex justify-center items-center h-full gap-5">
+          {/* Acción de Edición */}
           <button
             onClick={() => confirmSave({
               message: "¿Guardar los cambios?",
@@ -92,6 +124,8 @@ const HomePage = () => {
           >
             <i className="bi bi-pencil-square gap-2 mb-1 "></i>
           </button>
+
+          {/* Acción de Eliminación */}
           <button
             onClick={() => confirmDelete({
               message: "¿Cancelar Requisa?",
@@ -106,6 +140,10 @@ const HomePage = () => {
     },
   ];
 
+  /**
+   * Efecto de inicialización. 
+   * Ejecuta la petición de datos al cargar la página por primera vez.
+   */
   useEffect(() => {
     getInfo();
   }, []);
@@ -118,14 +156,14 @@ const HomePage = () => {
             Extensiones
           </h2>
 
-        
-            <button className='border border rounded-sm h-8 w-45 btn btn-success'
-              onClick={handleNuevaExtension}
-          
-            >
-              Nueva Extension
-            </button>
-         
+
+          <button className='border border rounded-sm h-8 w-45 btn btn-success'
+            onClick={handleNuevaExtension}
+
+          >
+            Nueva Extension
+          </button>
+
         </div>
         <DataGridAg columns={columns} data={data} />
       </div>
@@ -133,4 +171,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default HomePage;

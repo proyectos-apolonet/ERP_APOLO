@@ -1,4 +1,15 @@
+/**
+ * @file MiGridStyles.css
+ * @description Estilos personalizados para el componente de tablas (AG Grid) en Apolonet.
+ * Define la apariencia de cabeceras, filas, celdas, paginación y estados visuales (badges).
+ * Basado en una paleta de colores profesional: Azul (#1e3a5f), Naranja (#FF6D1F) y Slate (#334155).
+ */
+
 /* ── Contenedor principal ────────────────────────────────── */
+/**
+ * Clase maestra para el grid. 
+ * Establece dimensiones fijas, sombras suaves y las variables de entorno de AG Grid.
+ */
 .mi-grid {
   width: 100%;
   height: 700px;
@@ -32,7 +43,11 @@
   --ag-pagination-background-color: #f1f5f9;
 }
 
-/* ── Header ──────────────────────────────────────────────── */
+/* ── Header (Cabecera) ────────────────────────────────────── */
+/**
+ * Estilos para las celdas de la cabecera.
+ * Utiliza un color naranja (#FF6D1F) para resaltar los títulos de las columnas.
+ */
 .mi-grid .ag-header {
   background-color: #1e3a5f !important;
 }
@@ -58,7 +73,10 @@
   color: #93c5fd !important;
 }
 
-/* ── Filas ───────────────────────────────────────────────── */
+/* ── Filas (Rows) ────────────────────────────────────────── */
+/**
+ * Estilo de las filas con efecto 'zebra' (par/impar) y transición suave al pasar el mouse.
+ */
 .mi-grid .ag-row {
   border-bottom: 1px solid #e9eef4 !important;
   transition: background-color 0.15s ease;
@@ -76,7 +94,10 @@
   background-color: #f8fafc !important;
 }
 
-/* ── Celdas ──────────────────────────────────────────────── */
+/* ── Celdas (Cells) ───────────────────────────────────────── */
+/**
+ * Configuración de las celdas individuales para alineación perfecta del texto.
+ */
 .mi-grid .ag-cell {
   display: flex !important;
   align-items: center !important;
@@ -112,7 +133,11 @@
   border-radius: 999px;
 }
 
-/* ── Badges Estado ───────────────────────────────────────── */
+/* ── Badges de Estado y Prioridad ────────────────────────── */
+/**
+ * Componentes visuales para mostrar etiquetas de estado en las celdas.
+ * Se utilizan en columnas como "Estado" o "Prioridad" para facilitar la lectura rápida.
+ */
 .badge {
   padding: 3px 12px;
   border-radius: 999px;

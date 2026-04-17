@@ -2,34 +2,58 @@ import React, { useState } from 'react';
 import { loginUser } from '../api/services/authService';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * @file LoginPage.jsx
+ * @description Portal de acceso principal para Apolonet. 
+ * Gestiona la autenticación de usuarios y la redirección al dashboard.
+ */
+
+/**
+ * `LoginPage` - Componente de Autenticación.
+ * * @param {Object} props
+ * @param {function} props.setUser - Función del contexto global o App.js para guardar los datos del usuario autenticado.
+ * @returns {JSX.Element} Interfaz de Login con branding de Apolo.
+ */
 const LoginPage = ({ setUser }) => {
 
+    /** * Estado local del formulario. */
     const [form, setForm] = useState({
         email: "",
         password: "",
     });
 
+    /** * Estado para capturar y mostrar errores de autenticación (ej: 401 Unauthorized). */
     const [error, setError] = useState("");
+
+    /** * Hook de navegación de React Router para redireccionar tras el login. */
     const navigate = useNavigate();
 
+    /**
+     * Procesa el intento de inicio de sesión.
+     * @async
+     * @param {React.FormEvent} e - Evento de envío del formulario.
+     */
     const handleSubmit = async (e) => {
     e.preventDefault(); 
     setError("");
 
     try {
+        // Llamada al servicio de autenticación
         const userFound = await loginUser(form);
         
+        // Si es exitoso, actualizamos el estado global/padre
         setUser(userFound); 
         
+        // Redirección al Home
         navigate('/home'); 
     } catch (err) {
+        // Manejo de errores detallado según la respuesta del servidor
         setError(err.response?.data?.message || "Credenciales inválidas");
     }
 };
 
     return (
         <>
-
                 <div className='flex items-center justify-center'>
                     <figure className='-mb-22'>
                         <img
