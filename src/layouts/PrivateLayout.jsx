@@ -98,6 +98,14 @@ const PrivateLayout = ({ user, setUser }) => {
                                 </button>
                             </Link>
                         </li>
+                        <li>
+                            <Link to="/cdr">
+                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="CDR">
+                                    <i className="bi bi-telephone text-xl" />
+                                    <span className="is-drawer-close:hidden p-2 text-xl">CDR</span>
+                                </button>
+                            </Link>
+                        </li>
                         
                         {/* Botón de Logout (Anclado al fondo) */}
                         <li className="mt-auto border-t border-base-300">

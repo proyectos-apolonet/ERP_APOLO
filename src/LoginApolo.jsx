@@ -14,6 +14,13 @@ import RequisaPage from "./pages/Requisas/RequisaPrincipal/RequisaPage";
 import RequisaHistorial from "./pages/Requisas/RequisaHistorial/RequisaHistorial";
 import RequisaLayout from "./layouts/RequisaLayout/RequisaLayout";
 import ConfirmacionRequisa from "./pages/Requisas/RequisaHistorial/ConfirmacionRequisa";
+import CallDetailRegisterPage from "./pages/CallDetailRegister/CallDetailRegisterPage"
+import RegistrosCDR from "./pages/CallDetailRegister/RegistrosCDR/RegistrosCDR";
+import LlamadasEntrantes from "./pages/CallDetailRegister/Llamadas/LlamadasEntrantes";
+import LlamadasSalientes from "./pages/CallDetailRegister/Llamadas/LlamadasSalientes";
+import LlamadaPronto from "./pages/CallDetailRegister/Llamadas/LlamadaPronto";
+import LlamadaNoIdentificadas from "./pages/CallDetailRegister/Llamadas/LlamadaNoIdentificadas";
+import CDRLayout from "./layouts/CDRLayout/CDRLayout";
 
 /**
  * @file LoginApolo.jsx
@@ -103,6 +110,17 @@ export const LoginApolo = () => {
                         {/* /requisas/confirmacion */}
                         <Route path="confirmacion" element={<ConfirmacionRequisa user={user} />} />
                     </Route>
+
+                    {/* Modulo de Detalle para CDR */}
+                    <Route path="/cdr" element={<CDRLayout user={user} />} >
+                        <Route index element={<CallDetailRegisterPage user={user} />} />
+                        <Route path="registros" element={<RegistrosCDR user={user} /> } />
+                        <Route path="llamadas_entrantes" element={<LlamadasEntrantes user={user} /> } />
+                        <Route path="llamadas_salientes" element={<LlamadasSalientes user={user} /> } />
+                        <Route path="llamadas_apolonet" element={<LlamadaPronto user={user} /> } />
+                        <Route path="llamadas_no_indentificadas" element={<LlamadaNoIdentificadas user={user} /> } />
+                    </Route>
+
                     {/* Aquí agregas más páginas en el futuro */}
                 </Route>
             </Routes>
