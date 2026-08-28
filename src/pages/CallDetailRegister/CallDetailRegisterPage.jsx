@@ -41,13 +41,13 @@ const CallDetailRegisterPage = () => {
      const columns = [
     { field: "id", header: "ID", frozen: "left", width: 70, hide: true },
     { field: "archivo_control_id", header: "Archivo CDR", width: 180, hide: true },
-    { field: "nombre_archivo", header: "Nombre Archivo", width: 180, hide: true },
+    { field: "nombre_archivo", header: "Nombre Archivo", width: 210},
     { field: "fecha_carga", header: "Fecha Carga", frozen: "left", width: 180, hide:true },
     { field: "direccioncdr", header: "Dirección CDR", frozen: "left", width: 180 },
     { field: "numeroani", header: "Número ANI", frozen: "left", width: 180 },
     { field: "numerollamadooriginal", header: "Número Lamado", frozen: "left", width: 180 },
     { field: "tiempocobro", header: "Duración Llamada", frozen: "left", width: 180 },
-    { field: "fechacaptura", header: "Fecha de Captura", frozen: "left", width: 180 },
+    { field: "fechacaptura", header: "Fecha de Captura", frozen: "left", width: 220 },
     { field: "horacaptura", header: "Hora de captura", frozen: "left", width: 180 },
   ];
 
@@ -56,19 +56,22 @@ const CallDetailRegisterPage = () => {
       getInfoCDR();
     }, []);
 
-    return (
+  return (
     <div style={{ padding: "24px", background: "#1e3a5f", minHeight: "100vh" }}>
-      <div className="tooltip" data-tip="Nuevo Registro">
-        <button
-          className="btn btn-success p-5 mb-5"
-          onClick={handleAbrirCargaCDR}
-        >
-        <i className="pi pi-upload text-xl" /> 
-        Ingrese CDR </button>
+      <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "16px" }}>
+        <div className="tooltip" data-tip="Nuevo Registro">
+          <button
+            className="btn btn-success p-5"
+            onClick={handleAbrirCargaCDR}
+          >
+            <i className="pi pi-upload text-xl" />
+            Ingrese CDR
+          </button>
+        </div>
+        <h2 style={{ fontSize: "22px", fontWeight: 700, color: "#FF6D1F", margin: 0 }}>
+          Call Detail Register
+        </h2>
       </div>
-      <h2 style={{ fontSize: "22px", fontWeight: 700, color: "#FF6D1F", marginBottom: "16px" }}>
-        Call Detail Register
-      </h2>
       <DataGridAg columns={columns} data={data} />
     </div>
   )

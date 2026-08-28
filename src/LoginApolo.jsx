@@ -21,6 +21,9 @@ import LlamadasSalientes from "./pages/CallDetailRegister/Llamadas/LlamadasSalie
 import LlamadaPronto from "./pages/CallDetailRegister/Llamadas/LlamadaPronto";
 import LlamadaNoIdentificadas from "./pages/CallDetailRegister/Llamadas/LlamadaNoIdentificadas";
 import CDRLayout from "./layouts/CDRLayout/CDRLayout";
+import RangosLayout from "./layouts/RangosLayout/RangosLayout";
+import RangosAsignadosApolonet from "./pages/CallDetailRegister/RangosAsignados/RangosAsignadosApolonet";
+import RangosAsignadosCompetencia from "./pages/CallDetailRegister/RangosAsignados/RangosAsignadosCompetencia";
 
 /**
  * @file LoginApolo.jsx
@@ -119,6 +122,12 @@ export const LoginApolo = () => {
                         <Route path="llamadas_salientes" element={<LlamadasSalientes user={user} /> } />
                         <Route path="llamadas_apolonet" element={<LlamadaPronto user={user} /> } />
                         <Route path="llamadas_no_indentificadas" element={<LlamadaNoIdentificadas user={user} /> } />
+                    </Route>
+
+                     {/* Modulo de Detalle para CDR */}
+                    <Route path="/rangos" element={<RangosLayout user={user} />} >
+                        <Route index element={<RangosAsignadosApolonet user={user} />} />
+                        <Route path="rangos_operadoras_otras" element={<RangosAsignadosCompetencia user={user} /> } />
                     </Route>
 
                     {/* Aquí agregas más páginas en el futuro */}
