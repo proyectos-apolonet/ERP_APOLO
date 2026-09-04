@@ -51,7 +51,18 @@ const PrivateLayout = ({ user, setUser }) => {
 
             {/* Contenedor del contenido principal */}
             <div className="drawer-content">
-                {/* El Outlet es donde se inyectan las páginas (Home, Requisas, etc.) 
+                {/* Barra superior SOLO para móvil/tablet (oculta en lg+, donde el
+                    sidebar ya está siempre visible). Antes no existía ningún
+                    botón para ABRIR el drawer desde fuera de él -- el único
+                    toggle vivía dentro del propio drawer-side, así que en
+                    móvil (drawer cerrado por defecto) era imposible alcanzarlo. */}
+                <div className="lg:hidden flex items-center p-2 border-b border-base-300">
+                    <label htmlFor="my-drawer-4" className="btn btn-square btn-ghost" aria-label="Abrir menú">
+                        <i className="bi bi-list text-xl" />
+                    </label>
+                </div>
+
+                {/* El Outlet es donde se inyectan las páginas (Home, Requisas, etc.)
                   según la ruta activa en el navegador.
                 */}
                 <div className="p-4">
@@ -71,7 +82,7 @@ const PrivateLayout = ({ user, setUser }) => {
                                     : <i className="bi bi-arrow-bar-right text-xl p-2" />
                                 }
                             </label>
-                        </nav>  
+                        </nav>
 
                         {/* Enlaces de Navegación */}
                         <li>
@@ -114,7 +125,15 @@ const PrivateLayout = ({ user, setUser }) => {
                                 </button>
                             </Link>
                         </li>
-                        
+                        <li>
+                            <Link to="/pbx">
+                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="PBX">
+                                    <i className="bi bi-tree text-xl" />
+                                    <span className="is-drawer-close:hidden p-2 text-xl">PBX</span>
+                                </button>
+                            </Link>
+                        </li>
+
                         {/* Botón de Logout (Anclado al fondo) */}
                         <li className="mt-auto border-t border-base-300">
                             <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3 p-4 text-error"

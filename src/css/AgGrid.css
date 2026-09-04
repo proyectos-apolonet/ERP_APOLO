@@ -7,7 +7,7 @@
 
 /* ── Contenedor principal ────────────────────────────────── */
 /**
- * Clase maestra para el grid. 
+ * Clase maestra para el grid.
  * Establece dimensiones fijas, sombras suaves y las variables de entorno de AG Grid.
  */
 .mi-grid {
@@ -107,11 +107,30 @@
 }
 
 /* ── Paginación ──────────────────────────────────────────── */
+/**
+ * El panel de paginación es un contenedor flex angosto -- si no le decimos
+ * explícitamente que no parta el texto a la mitad, cuando el contenedor se
+ * queda sin espacio (pantallas chicas, sidebar ocupando ancho) el resumen
+ * "1 to 4 of 4" se rompe palabra por palabra en varias líneas. Con
+ * flex-wrap en el panel y white-space: nowrap en cada bloque, si de verdad
+ * no cabe todo en una fila, baja el BLOQUE completo (selector de tamaño,
+ * resumen, o botones) a una segunda línea en vez de partir el texto.
+ */
 .mi-grid .ag-paging-panel {
   background-color: #f1f5f9 !important;
   border-top: 1.5px solid #e2e8f0 !important;
   font-size: 13px !important;
   color: #475569 !important;
+  flex-wrap: wrap !important;
+  row-gap: 4px !important;
+  justify-content: center !important;
+}
+
+.mi-grid .ag-paging-page-size,
+.mi-grid .ag-paging-row-summary-panel,
+.mi-grid .ag-paging-page-summary-panel {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
 }
 
 .mi-grid .ag-paging-button {

@@ -3,14 +3,13 @@ import { TabMenu } from "primereact/tabmenu";
 
 import React from 'react'
 
-const RangosLayout = ({ user }) => {
+const PbxLayout = ({ user }) => {
 
     const navigate = useNavigate();
     const location = useLocation();
 
     const items = [
-        { label: 'Rangos Apolonet', icon: 'pi pi-list', command: () => navigate('/rangos') },
-        { label: 'Rangos Otras Operadoras', icon: 'pi pi-list', command: () => navigate('/rangos/rangos_operadoras_otras') },
+        { label: 'PBX', icon: 'pi pi-list', command: () => navigate('/pbx') },
     ];
 
     const activeIndex = location.pathname === '/rangos' ? 1 : 0;
@@ -19,7 +18,7 @@ const RangosLayout = ({ user }) => {
      <div className="card shadow-sm border-1 surface-border p-4 bg-base-100 rounded-box">
             {/* Cabecera del Módulo */}
             <div className="flex align-items-center justify-content-between mb-4">
-                <h2 className="text-xl font-bold ">Rangos</h2>
+                <h2 className="text-xl font-bold ">PBX</h2>
             </div>
 
             {/* Navegación interna del módulo */}
@@ -36,4 +35,4 @@ const RangosLayout = ({ user }) => {
   )
 }
 
-export default RangosLayout
+export default PbxLayout

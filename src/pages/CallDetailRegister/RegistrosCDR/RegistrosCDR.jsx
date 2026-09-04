@@ -17,8 +17,7 @@ const RegistrosCDR = () => {
 
       const tempoCDR = await getCDRArchivosControl();
       setData(tempoCDR);
-      console.log("Carga de datos: ", tempoCDR);
-
+      
     } catch (error) {
       console.error("Error al cargar CDR ", error);
     } finally {

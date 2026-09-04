@@ -19,65 +19,112 @@ ModuleRegistry.registerModules([AllCommunityModule]);
  * @property {function} [render] - Función personalizada: (data) => ReactNode. Recibe el objeto de la fila.
  */
 
-/**
- * Componente interno para renderizar etiquetas de estado/prioridad.
- * @private
- */
-
 const Badge = ({ label, type }) => {
   if (!label) return null;
   const clase = `badge badge-${label.toLowerCase()}`;
   return <span className={clase}>{label}</span>;
 };
 
-/**
- * Diccionario de renderizado automático basado en el nombre del campo (field).
- * @constant
- */
 const AUTO_RENDERERS = {
   estado: (params) => <Badge label={params.value} />,
   prioridad: (params) => <Badge label={params.value} />,
 };
 
- /**
- * `DataGridAg` es un wrapper personalizado sobre AG-Grid React.
- * * Ofrece soporte nativo para:
- * - Renderizado automático de Badges (campos 'estado' y 'prioridad').
- * - Configuración simplificada de columnas mediante una interfaz personalizada.
- * - Paginación y filtrado configurados por defecto.
- * * @example
- * <DataGridAg 
- * columns={[{ field: 'nombre', header: 'Nombre' }, { field: 'estado', header: 'Status' }]} 
- * data={usuarios} 
+/**
+ * `DataGridAg` -- wrapper sobre AG-Grid React con DOS modos:
+ *
+ * 1) MODO NORMAL (client-side, el de siempre): le pasas `data` con TODAS las
+ *    filas ya en memoria (bien para catálogos chicos: PBX, rangos, etc.).
+ *
+ * 2) MODO SERVIDOR (infinite row model, NUEVO): en vez de `data`, le pasas
+ *    `fetchPage` -- una función async que recibe { startRow, endRow } y
+ *    devuelve { rows, lastRow }. AG-Grid pide bloques de filas a medida que
+ *    el usuario pagina/hace scroll, en vez de traer todo de una vez. Úsalo
+ *    para tablas grandes (CDR, con millones de filas).
+ *
+ *    `lastRow`: si `rows.length` fue menor a lo pedido, ya no hay más datos
+ *    -- pásale `startRow + rows.length`. Si sí llenaste el bloque completo y
+ *    puede haber más, pásale `-1` (o no lo mandes) para que siga pidiendo.
+ *
+ * @example Modo servidor
+ * <DataGridAg
+ *   columns={columnasSalientes}
+ *   fetchPage={({ startRow, endRow }) => CDRService.fetchSalientesPagina({ startRow, endRow, fechaInicio, fechaFin })}
+ *   pageSize={100}
  * />
- * * @param {Object} props
- * @param {ColumnConfig[]} props.columns - Configuración de columnas para la tabla.
- * @param {Array<Object>} props.data - Array de objetos con la información de las filas.
+ *
+ * @param {Object} props
+ * @param {ColumnConfig[]} props.columns
+ * @param {Array<Object>} [props.data] - Solo modo normal.
+ * @param {function} [props.fetchPage] - Solo modo servidor: ({startRow, endRow}) => Promise<{rows, lastRow}>
+ * @param {number} [props.pageSize=50]
  * @returns {JSX.Element}
-  */
-const DataGridAg = ({ columns, data }) => {
+ */
+const DataGridAg = ({ columns, data, fetchPage, pageSize = 50 }) => {
 
-  /**
-   * Mapea la configuración personalizada de 'columns' al formato interno de AG-Grid.
-   * Utiliza useMemo para evitar cálculos innecesarios en cada re-render.
-   */
   const columnDefs = useMemo(() => {
     if (!columns) return [];
     return columns.map(col => ({
       field: col.field,
       headerName: col.header,
       sortable: col.sortable ?? true,
-      filter: true,
+      // El filtro nativo de columna de AG-Grid solo sirve en modo cliente
+      // (data): filtra sobre lo que ya está cargado en memoria. En modo
+      // servidor (fetchPage) el datasource no implementa filterModel, así
+      // que ese filtro parecía "no hacer nada" -- se desactiva ahí y el
+      // filtrado real lo hacen los <select> que arma cada página, contra
+      // la base de datos.
+      filter: fetchPage ? false : true,
       hide: col.hide ?? false,
       editable: col.editable ?? false,
       pinned: col.frozen === "left" ? "left" : undefined,
       width: col.width,
-      // Lógica de renderizado: personalizada > automática > defecto
       cellRenderer: col.render
         ? (params) => col.render(params.data)
         : AUTO_RENDERERS[col.field] ?? undefined,
     }));
-  }, [columns]);
+  }, [columns, !!fetchPage]);
+
+  // MODO SERVIDOR: arma el "datasource" que AG-Grid usa para pedir bloques
+  // de filas. Se recalcula si cambia fetchPage (por ejemplo, si cambian las
+  // fechas del filtro -- pásale una función nueva cada vez que cambien los
+  // filtros para que el grid vuelva a pedir desde cero).
+  const datasource = useMemo(() => {
+    if (!fetchPage) return null;
+    return {
+      getRows: async (params) => {
+        const { startRow, endRow, successCallback, failCallback } = params;
+        try {
+          const { rows, lastRow } = await fetchPage({ startRow, endRow });
+          successCallback(rows ?? [], lastRow ?? -1);
+        } catch (err) {
+          console.error("Error cargando datos del grid", err);
+          failCallback();
+        }
+      },
+    };
+  }, [fetchPage]);
+
+  if (fetchPage) {
+    return (
+      <div className="ag-theme-quartz mi-grid">
+        <AgGridReact
+          key={datasource} // fuerza recarga limpia cuando cambia fetchPage (ej: cambio de filtro de fechas)
+          columnDefs={columnDefs}
+          rowModelType="infinite"
+          datasource={datasource}
+          cacheBlockSize={pageSize}
+          paginationPageSize={pageSize}
+          pagination={true}
+          animateRows={true}
+          theme="legacy"
+          defaultColDef={{
+            resizable: true,
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="ag-theme-quartz mi-grid">
@@ -85,7 +132,7 @@ const DataGridAg = ({ columns, data }) => {
         rowData={data}
         columnDefs={columnDefs}
         pagination={true}
-        paginationPageSize={50}
+        paginationPageSize={pageSize}
         animateRows={true}
         theme="legacy"
         defaultColDef={{

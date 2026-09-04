@@ -24,6 +24,9 @@ import CDRLayout from "./layouts/CDRLayout/CDRLayout";
 import RangosLayout from "./layouts/RangosLayout/RangosLayout";
 import RangosAsignadosApolonet from "./pages/CallDetailRegister/RangosAsignados/RangosAsignadosApolonet";
 import RangosAsignadosCompetencia from "./pages/CallDetailRegister/RangosAsignados/RangosAsignadosCompetencia";
+import PbxLayout from "./layouts/PBXLayout/PbxLayout";
+import PbxPage from "./pages/Pbx/PBX/PbxPage";
+
 
 /**
  * @file LoginApolo.jsx
@@ -128,6 +131,11 @@ export const LoginApolo = () => {
                     <Route path="/rangos" element={<RangosLayout user={user} />} >
                         <Route index element={<RangosAsignadosApolonet user={user} />} />
                         <Route path="rangos_operadoras_otras" element={<RangosAsignadosCompetencia user={user} /> } />
+                    </Route>
+
+                     {/* Modulo de Detalle para CDR */}
+                    <Route path="/pbx" element={<PbxLayout user={user} />} >
+                        <Route index element={<PbxPage user={user} />} />
                     </Route>
 
                     {/* Aquí agregas más páginas en el futuro */}

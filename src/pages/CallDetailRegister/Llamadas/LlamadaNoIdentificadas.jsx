@@ -1,29 +1,37 @@
 import DataGridAg from '../../../components/AgGrid/DataAgGrid';
 import 'primeicons/primeicons.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { useEffect, useState } from 'react';
-import { getCDRLlamadasNoIdentificadas } from '../../../api/CDR/CDRService';
+import { useCallback, useEffect, useState } from 'react';
+import { getCDRLlamadasNoIdentificadas, getFiltrosCDRLlamadasNoIdentificadas } from '../../../api/CDR/CDRService';
 
 const LlamadaNoIdentificadas = () => {
 
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const [fechaInicio, setFechaInicio] = useState("");
+  const [fechaFin, setFechaFin] = useState("");
 
-  const getInfoCDRLlamadasNoIdentificadas = async () => {
+  const [filtrosDisponibles, setFiltrosDisponibles] = useState({
+    tipollamada: [], grupo: [], operador_origen: [], operador_destino: [], ciudad_origen: [], ciudad_destino: [],
+  });
+  const [tipollamada, setTipollamada] = useState("");
+  const [grupo, setGrupo] = useState("");
+  const [operadorOrigen, setOperadorOrigen] = useState("");
+  const [operadorDestino, setOperadorDestino] = useState("");
+  const [ciudadOrigen, setCiudadOrigen] = useState("");
+  const [ciudadDestino, setCiudadDestino] = useState("");
 
-    try {
-      setLoading(true);
+  useEffect(() => {
+    getFiltrosCDRLlamadasNoIdentificadas()
+      .then(setFiltrosDisponibles)
+      .catch((error) => console.error("Error al cargar los filtros", error));
+  }, []);
 
-      const tempoCDR = await getCDRLlamadasNoIdentificadas();
-      setData(tempoCDR);
-      console.log("Carga de datos: ", tempoCDR);
-
-    } catch (error) {
-      console.error("Error al cargar CDR ", error);
-    } finally {
-      setLoading(false)
-    }
-  };
+  const fetchPage = useCallback(
+    ({ startRow, endRow }) => getCDRLlamadasNoIdentificadas({
+      startRow, endRow, fechaInicio, fechaFin,
+      tipollamada, grupo, operadorOrigen, operadorDestino, ciudadOrigen, ciudadDestino,
+    }),
+    [fechaInicio, fechaFin, tipollamada, grupo, operadorOrigen, operadorDestino, ciudadOrigen, ciudadDestino]
+  );
 
   const columns = [
     { field: "id", header: "ID", frozen: "left", width: 70 },
@@ -43,28 +51,50 @@ const LlamadaNoIdentificadas = () => {
     { field: "generado_en", header: "Fecha Carga", width: 180 },
   ];
 
-
-  useEffect(() => {
-    getInfoCDRLlamadasNoIdentificadas();
-  }, []);
-
   return (
-    <div style={{ padding: "24px", background: "#1e3a5f", minHeight: "100vh" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "16px" }}>
-        {/* <div className="tooltip" data-tip="Nuevo Registro">
-        <button
-          className="btn btn-success p-5"
-          onClick={handleAbrirCargaCDR}
-        >
-          <i className="pi pi-upload text-xl" />
-          Ingrese CDR
-        </button>
-      </div> */}
-        <h2 style={{ fontSize: "22px", fontWeight: 700, color: "#FF6D1F", margin: 0 }}>
+    <div className="p-6 bg-[#1e3a5f] min-h-screen">
+      <div className="flex items-center gap-4 mb-4">
+        <h2 className="text-[22px] font-bold text-[#FF6D1F] m-0">
           Llamadas No Identificadas
         </h2>
       </div>
-      <DataGridAg columns={columns} data={data} />
+
+      <div className="flex flex-wrap gap-3 items-center mb-4">
+        <input type="date" className="input input-bordered" value={fechaInicio} onChange={(e) => setFechaInicio(e.target.value)} />
+        <input type="date" className="input input-bordered" value={fechaFin} onChange={(e) => setFechaFin(e.target.value)} />
+
+        <select className="select select-bordered" value={tipollamada} onChange={(e) => setTipollamada(e.target.value)}>
+          <option value="">Tipo de llamada (todos)</option>
+          {filtrosDisponibles.tipollamada.map((valor) => <option key={valor} value={valor}>{valor}</option>)}
+        </select>
+
+        <select className="select select-bordered" value={grupo} onChange={(e) => setGrupo(e.target.value)}>
+          <option value="">Grupo / red (todos)</option>
+          {filtrosDisponibles.grupo.map((valor) => <option key={valor} value={valor}>{valor}</option>)}
+        </select>
+
+        <select className="select select-bordered" value={operadorOrigen} onChange={(e) => setOperadorOrigen(e.target.value)}>
+          <option value="">Operador origen (todos)</option>
+          {filtrosDisponibles.operador_origen.map((valor) => <option key={valor} value={valor}>{valor}</option>)}
+        </select>
+
+        <select className="select select-bordered" value={operadorDestino} onChange={(e) => setOperadorDestino(e.target.value)}>
+          <option value="">Operador destino (todos)</option>
+          {filtrosDisponibles.operador_destino.map((valor) => <option key={valor} value={valor}>{valor}</option>)}
+        </select>
+
+        <select className="select select-bordered" value={ciudadOrigen} onChange={(e) => setCiudadOrigen(e.target.value)}>
+          <option value="">Ciudad origen (todas)</option>
+          {filtrosDisponibles.ciudad_origen.map((valor) => <option key={valor} value={valor}>{valor}</option>)}
+        </select>
+
+        <select className="select select-bordered" value={ciudadDestino} onChange={(e) => setCiudadDestino(e.target.value)}>
+          <option value="">Ciudad destino (todas)</option>
+          {filtrosDisponibles.ciudad_destino.map((valor) => <option key={valor} value={valor}>{valor}</option>)}
+        </select>
+      </div>
+
+      <DataGridAg columns={columns} fetchPage={fetchPage} pageSize={100} />
     </div>
   )
 }
